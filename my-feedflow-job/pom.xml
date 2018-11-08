@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>my-feedflow-parent</artifactId>
 		<groupId>com.beans</groupId>
-		<version>0.0.1-release</version>
+		<version>0.0.1</version>
 	</parent>
 
 	<artifactId>my-feedflow-job</artifactId>
@@ -33,8 +33,13 @@
 			<artifactId>spring-boot-starter-log4j</artifactId>
 			<version>1.3.8.RELEASE</version>
 		</dependency>
-		
-		<!-- HBase -->
+		<!-- ========Com.Beans.Base======== -->
+		<dependency>
+			<groupId>com.beans</groupId>
+			<artifactId>my-feedflow-base</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<!-- ========HBase======== -->
 		<dependency>
 			<groupId>org.apache.hbase</groupId>
 			<artifactId>hbase-client</artifactId>
@@ -60,6 +65,12 @@
 					<artifactId>servlet-api</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<!-- ========FastJSON======== -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.31</version>
 		</dependency>
 	</dependencies>
 

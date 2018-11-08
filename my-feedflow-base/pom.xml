@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>my-feedflow-parent</artifactId>
 		<groupId>com.beans</groupId>
-		<version>0.0.1-release</version>
+		<version>0.0.1</version>
 	</parent>
 
 	<artifactId>my-feedflow-base</artifactId>
