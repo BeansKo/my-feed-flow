@@ -1,0 +1,4 @@
+dev:
+  create "ecitem:FeedFlow", {NAME =>'i', BLOOMFILTER => 'ROW', COMPRESSION =>'GZ', VERSIONS => 1, BLOCKCACHE => true, IN_MEMORY=>false}
+prd:
+  create "ecitem:FeedFlow", {NAME =>'i', BLOOMFILTER => 'ROW', COMPRESSION =>'SNAPPY', VERSIONS => 1, BLOCKCACHE => true, IN_MEMORY=>false}
