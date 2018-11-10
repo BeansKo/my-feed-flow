@@ -8,7 +8,7 @@ import Document from './pages/Document';
 import Services from './pages/Services';
 import Member from './pages/Member';
 import Setting from './pages/Setting';
-import {Database} from './pages/Database';
+import {Database,addDatabase} from './pages/Database';
 
 const routerConfig = [
   {
@@ -40,6 +40,18 @@ const routerConfig = [
     path: '/database',
     layout: BasicLayout,
     component: Database,
+    childRoutes:[
+      {
+        path: '/add',
+        layout: BasicLayout,
+        component: addDatabase,
+      },
+      {
+        path: '/edit/:id',
+        layout: BasicLayout,
+        component: Setting,
+      },
+    ],
   },
 ];
 
