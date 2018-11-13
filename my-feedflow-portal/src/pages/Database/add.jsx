@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
+import DatabaseForm from './components/Form';
 import { withRouter } from 'react-router';
+import {DatabaseService} from '../../service' 
 
 @withRouter
 export default class add extends Component{
@@ -11,10 +13,17 @@ export default class add extends Component{
         this.state = {};
     }
 
+    onSubmit = async(data) => {
+        alert('aaa')
+        await DatabaseService.insert(data);
+        this.props.history.push('/database');
+        return true;
+    }
+
     render(){
         return(
             <div> 
-                aasadfsdfsdfsdf
+                <DatabaseForm onSubmit={this.onSubmit}/>
             </div>
         );
     }

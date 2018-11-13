@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from '@icedesign/base';
 import { withRouter } from 'react-router';
 import DataBaseTable from './components/List';
-import {DatabaseService} from '../../service';
+import { DatabaseService } from '../../service';
 
 @withRouter
 export default class Database extends Component{
@@ -17,6 +17,14 @@ export default class Database extends Component{
         return await DatabaseService.list()
     }
 
+    edit = (id) =>{
+        this.props.history.push(`/database/edit/${id}`)
+    }
+
+    del = async(id) => {
+        await DatabaseService.del(id);
+    }
+
     goAdd = () =>{
         this.props.history.push('/database/add')
     }
@@ -27,7 +35,7 @@ export default class Database extends Component{
                 <div style={{textAlign: 'right', paddingTop:'10px', paddingRight:'50px', width:'100%', backgroundColor:'#fff'}}>
                     <Button type="primary" size="large" style={{minWidth:'100px'}} onClick={this.goAdd}>Add New Database</Button>
                 </div>
-                <DataBaseTable list={this.list}/>
+                <DataBaseTable list={this.list} edit={this.edit} del={this.del}/>
             </div>
         );
     }

@@ -2,6 +2,7 @@ package com.beans.my.feedflow.job.controller;
 
 import java.util.List;
 
+import org.apache.hadoop.hbase.exceptions.HBaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,9 +35,22 @@ public class DataBaseAPI extends BaseAPI {
 		return SUCCESS(databaseService.list());
 	}
 	
-	@RequestMapping(value="insert", method=RequestMethod.POST)
+	@RequestMapping(value="/delete/{id}",method = RequestMethod.POST)
+	@ResponseBody
+	public Response<Void> delete(@PathVariable String id) throws Exception{
+		databaseService.delete(id);
+		return SUCCESS();
+	}
+	
+	@RequestMapping(value="/insert", method=RequestMethod.POST)
 	@ResponseBody
 	public Response<Databases> insert(@RequestBody Databases database) throws Exception{
 		return SUCCESS(databaseService.insert(database));
+	}
+	
+	@RequestMapping(value="/update", method = RequestMethod.POST)
+	@ResponseBody
+	public Response<Databases> update(@RequestBody Databases database) throws Exception{
+		return SUCCESS(databaseService.update(database));
 	}
 }

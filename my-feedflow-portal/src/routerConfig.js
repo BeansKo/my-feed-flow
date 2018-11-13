@@ -8,7 +8,7 @@ import Document from './pages/Document';
 import Services from './pages/Services';
 import Member from './pages/Member';
 import Setting from './pages/Setting';
-import {Database,addDatabase} from './pages/Database';
+import {Database,addDatabase,editDatabase} from './pages/Database';
 
 const routerConfig = [
   {
@@ -49,7 +49,7 @@ const routerConfig = [
       {
         path: '/edit/:id',
         layout: BasicLayout,
-        component: Setting,
+        component: editDatabase,
       },
     ],
   },
