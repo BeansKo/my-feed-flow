@@ -92,6 +92,12 @@
 			<artifactId>curator-recipes</artifactId>
 			<version>4.0.1</version>
 		</dependency>
+		<!-- ========KAFKA======== -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.10</artifactId>
+			<version>0.10.2.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
