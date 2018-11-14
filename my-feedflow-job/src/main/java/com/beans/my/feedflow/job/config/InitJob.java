@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.beans.my.feedflow.base.model.Job;
-import com.beans.my.feedflow.job.scheduled.ScheduleJob;
-import com.beans.my.feedflow.job.scheduled.ScheduleTask;
+import com.beans.my.feedflow.job.scheduled.quartz.ScheduleJob;
+import com.beans.my.feedflow.job.scheduled.quartz.ScheduleTask;
 import com.beans.my.feedflow.job.service.JobService;
 
 @Component

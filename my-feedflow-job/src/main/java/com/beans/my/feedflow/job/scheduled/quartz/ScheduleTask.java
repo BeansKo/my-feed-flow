@@ -1,4 +1,4 @@
-package com.beans.my.feedflow.job.scheduled;
+package com.beans.my.feedflow.job.scheduled.quartz;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
@@ -37,8 +37,10 @@ public class ScheduleTask {
 	public void runOne(ScheduleJob job, Class<? extends Job> jobClazz)
 			throws SchedulerException {
 		JobKey jobKey = JobKey.jobKey("ones_" + job.getJobId(), "Group");
+
 		JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(jobKey)
 				.build();
+		
 		jobDetail.getJobDataMap().put("scheduleJob", job);
 		scheduler.addJob(jobDetail, true, true);
 		scheduler.triggerJob(jobKey);
@@ -61,11 +63,16 @@ public class ScheduleTask {
 	 * @throws SchedulerException
 	 */
 	public void addTask(ScheduleJob job,Class<? extends Job> jobClazz) throws SchedulerException{
-		TriggerKey triggerKey = TriggerKey.triggerKey(job.getJobId(),"Group");
+		//将Job和Trigger注册到Scheduler时，可以为它们设置key，配置其身份属性。
 		JobKey jobKey = JobKey.jobKey(job.getJobId(),"Group");
 		
+		//JobDetail对象是在将job加入scheduler时，由客户端程序（你的程序）创建的。
+		//它包含job的各种属性设置，以及用于存储job实例状态信息的JobDataMap。
 		JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(jobKey).build();
 		jobDetail.getJobDataMap().put("scheduleJob", job);
+		
+		//Trigger用于触发Job的执行。当你准备调度一个job时，你创建一个Trigger的实例，然后设置调度相关的属性。
+		TriggerKey triggerKey = TriggerKey.triggerKey(job.getJobId(),"Group");
 		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
 		Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
 		

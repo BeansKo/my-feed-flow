@@ -1,4 +1,4 @@
-package com.beans.my.feedflow.job.scheduled;
+package com.beans.my.feedflow.job.scheduled.quartz;
 
 /**
  * 任务数据
