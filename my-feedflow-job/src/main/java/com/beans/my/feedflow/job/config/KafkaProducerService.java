@@ -21,7 +21,7 @@ public class KafkaProducerService implements AutoCloseable{
 	@Value("${kafka.topic}")
 	String topic;
 	
-	@PostConstruct
+//	@PostConstruct
 	public void start(){
 		Properties prop = new Properties();
 		prop.put("bootstrap.servers", producerHost);

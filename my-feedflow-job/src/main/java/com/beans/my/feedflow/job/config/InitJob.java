@@ -27,12 +27,12 @@ public class InitJob {
 	public void start() throws Exception{
 		List<Job> jobs = jobService.list();
 		for(Job job:jobs){
-			if(job.isStatus()){
-				logger.info("add job:" + job.getName());
-				scheduleTask.addTask(new ScheduleJob(job.getId(), job.getScheduled()));
-			}else{
-				scheduleTask.delTask(job.getId());
-			}
+//			if(job.isStatus()){
+//				logger.info("add job:" + job.getName());
+//				scheduleTask.addTask(new ScheduleJob(job.getId(), job.getScheduled()));
+//			}else{
+//				scheduleTask.delTask(job.getId());
+//			}
 		}
 	}
 
