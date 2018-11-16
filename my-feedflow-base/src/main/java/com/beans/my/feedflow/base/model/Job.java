@@ -45,7 +45,10 @@ public class Job extends BaseDomain{
 	 * 运行日志级别
 	 */
 	String logLevel;
-
+	/**
+	 * JobType
+	 */
+	JobType jobTypeValue;
 	
 	public String getName() {
 		return name;
@@ -124,6 +127,14 @@ public class Job extends BaseDomain{
 
 	public void setLogLevel(String logLevel) {
 		this.logLevel = logLevel;
+	}
+	
+	public JobType getJobTypeValue() {
+		return jobTypeValue;
+	}
+	
+	public void setJobTypeValue(JobType jobTypeValue) {
+		this.jobTypeValue = jobTypeValue;
 	}
 
 	@Override
