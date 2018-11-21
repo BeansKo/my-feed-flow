@@ -46,12 +46,12 @@ const asideMenuConfig = [
     icon: 'person',
   },
   {
-    name: '设置',
-    path: '/setting',
-    icon: 'shezhi',
+    name: 'Email',
+    path: '/email',
+    icon: 'person',
   },
   {
-    name: '数据',
+    name: 'DB',
     path: '/database',
     icon: 'shezhi',
   },

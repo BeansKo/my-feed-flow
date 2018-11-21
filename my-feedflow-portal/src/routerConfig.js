@@ -9,6 +9,7 @@ import Services from './pages/Services';
 import Member from './pages/Member';
 import Setting from './pages/Setting';
 import {Database,addDatabase,editDatabase} from './pages/Database';
+import {Email,addEmail} from './pages/Email'
 
 const routerConfig = [
   {
@@ -32,9 +33,16 @@ const routerConfig = [
     component: Member,
   },
   {
-    path: '/setting',
+    path: '/email',
     layout: BasicLayout,
-    component: Setting,
+    component: Email,
+    childRoutes: [
+      {
+        path: '/add',
+        layout: BasicLayout,
+        component: addEmail,
+      }
+    ],
   },
   {
     path: '/database',

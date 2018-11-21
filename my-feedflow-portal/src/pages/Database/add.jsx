@@ -14,7 +14,6 @@ export default class add extends Component{
     }
 
     onSubmit = async(data) => {
-        alert('aaa')
         await DatabaseService.insert(data);
         this.props.history.push('/database');
         return true;

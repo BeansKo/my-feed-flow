@@ -25,8 +25,8 @@ public class QuartzJob extends QuartzJobBean{
 	@Autowired
 	ExecuteJob executeJob;
 
-	//当Job的一个trigger被触发，execute（）方法被调度程序的一个工作线程调用。
-	//传递给execute()方法的JobExecutionContext对象中保存着该job运行时的一些信息。
+	//当Job的一个trigger被触发，executeInternal（）方法被调度程序的一个工作线程调用。
+	//传递给executeInternal()方法的JobExecutionContext对象中保存着该job运行时的一些信息。
 	@Override
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
