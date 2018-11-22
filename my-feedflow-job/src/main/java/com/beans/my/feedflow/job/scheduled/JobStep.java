@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import com.beans.my.feedflow.base.annotation.Step;
 
 @Step(value="默认类型")
-public class JobStep implements AutoCloseable{
+public abstract class JobStep implements AutoCloseable{
 	
 	@Autowired
 	protected ApplicationContext applicationContext;

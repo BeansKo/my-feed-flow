@@ -36,14 +36,14 @@ const asideMenuConfig = [
     icon: 'copy',
   },
   {
-    name: '服务',
+    name: 'JOB',
     path: '/services',
-    icon: 'cascades',
+    icon: 'copy',
   },
   {
-    name: '成员',
-    path: '/member',
-    icon: 'person',
+    name: 'Type',
+    path: '/jobtype',
+    icon: 'cascades',
   },
   {
     name: 'Email',

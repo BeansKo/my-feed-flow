@@ -36,17 +36,13 @@ public class JobStepAPI extends BaseAPI{
 	@ResponseBody
 	public Response<List<JobStepResponse>> list() throws Exception {
 		List<JobStepResponse> list = new ArrayList<JobStepResponse>();
-		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(
-				false);
+		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
 		scanner.addIncludeFilter(new AssignableTypeFilter(JobStep.class));
-		scanner.addIncludeFilter(new AnnotationTypeFilter(Step.class, true,
-				false));
-		Set<BeanDefinition> beans = scanner
-				.findCandidateComponents("com.beans.my.feedflow");
+		scanner.addIncludeFilter(new AnnotationTypeFilter(Step.class, true,false));
+		Set<BeanDefinition> beans = scanner.findCandidateComponents("com.beans.my.feedflow.job");
 		for (BeanDefinition t : beans) {
 			String clazzName = t.getBeanClassName();
-			Class<?> clazz = Class.forName(clazzName, false, this.getClass()
-					.getClassLoader());
+			Class<?> clazz = Class.forName(clazzName, false, this.getClass().getClassLoader());
 
 			Step step = clazz.getAnnotation(Step.class);
 
@@ -56,14 +52,11 @@ public class JobStepAPI extends BaseAPI{
 				for (StepConfig configValue : configValues) {
 					config.add(new StepConfigResponse(configValue));
 				}
-				list.add(new JobStepResponse(t.getBeanClassName(),
-						step.value(), config));
+				list.add(new JobStepResponse(t.getBeanClassName(),step.value(), config));
 			}
 
 		}
-		Collections.sort(list, (o1, o2) -> {
-			return o1.getLabel().compareTo(o2.getLabel());
-		});
+		Collections.sort(list, (o1, o2) -> {return o1.getLabel().compareTo(o2.getLabel());});
 		return SUCCESS(list);
 	}
 }

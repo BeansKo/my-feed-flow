@@ -13,5 +13,10 @@ public class JobConstants {
 		
 		/** ConvertFileEncode: 文件编码 */
 		public static final String COMMON_FILE_ENCODE = "commonFileEncode";
+		
+		
+		
+		/** ReadConfigDatabase: AutoJob的配置数据库 */
+		public static final String AUTO_DATABASE = "autoDatabase";
 	}
 }

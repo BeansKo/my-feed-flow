@@ -10,6 +10,7 @@ import Member from './pages/Member';
 import Setting from './pages/Setting';
 import {Database,addDatabase,editDatabase} from './pages/Database';
 import {Email,addEmail} from './pages/Email'
+import {JobType,AddJobType} from './pages/JobType'
 
 const routerConfig = [
   {
@@ -28,9 +29,16 @@ const routerConfig = [
     component: Services,
   },
   {
-    path: '/member',
+    path: '/jobtype',
     layout: BasicLayout,
-    component: Member,
+    component: JobType,
+    childRoutes: [
+      {
+        path: '/add',
+        layout: BasicLayout,
+        component: AddJobType,
+      }
+    ]
   },
   {
     path: '/email',
