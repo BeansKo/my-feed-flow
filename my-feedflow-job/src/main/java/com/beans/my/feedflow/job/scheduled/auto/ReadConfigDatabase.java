@@ -6,11 +6,13 @@ import com.beans.my.feedflow.base.annotation.Step;
 import com.beans.my.feedflow.base.annotation.StepConfig;
 import com.beans.my.feedflow.base.enums.FormType;
 import com.beans.my.feedflow.job.scheduled.JobConstants.ConfigName;
+import com.beans.my.feedflow.job.scheduled.JobConstants;
 import com.beans.my.feedflow.job.scheduled.JobContext;
 import com.beans.my.feedflow.job.scheduled.JobStep;
 
 @Step(value = "AUTO-读取SQL配置", config = {
-		@StepConfig(label = "Database", name = ConfigName.AUTO_DATABASE, type = FormType.DATABASE, required = true)
+		@StepConfig(label = "Database", name = ConfigName.AUTO_DATABASE, type = FormType.DATABASE, required = true),
+		@StepConfig(label = "SQL", name = ConfigName.AUTO_SQL, type = FormType.SQL, required = true, defaultValue = JobConstants.AUTO_JOB_SQL_TEMPLATE),
 })
 public class ReadConfigDatabase  extends JobStep{
 

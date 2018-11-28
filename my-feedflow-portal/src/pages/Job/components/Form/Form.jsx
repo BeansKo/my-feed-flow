@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import PropTypes from 'prop-types';
 import { Input, Grid, Button, Select, Transfer, Switch, Feedback, NumberPicker } from '@icedesign/base';
-// import Monaco from 'react-monaco-editor';
+import Monaco from 'react-monaco-editor';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
-
 
 const { Row, Col } = Grid;
 export default class Form extends Component {
@@ -55,7 +54,43 @@ export default class Form extends Component {
     formChange = (value) => {
         this.setState({ value });
     };
-    
+
+    fillDefaultValue = () => {
+        this.setState((prevState, props) => {
+          let value = prevState.value
+          if(!value.logLevel) {
+            value.logLevel = "INFO"
+          }
+          if(!value.config) {
+            value.config = {}
+          }
+          if(this.state.jobConfig && this.state.jobConfig.length > 0) {
+            this.state.jobConfig.map(config=>{
+              if(!value.config[config.name] && config.defaultValue) {
+                value.config[config.name] = config.defaultValue
+              }
+            })
+          }
+          return { value: value }
+        });
+    }
+
+    validateAllFormField = () => {
+        this.setState({loading : true})
+        this.fillDefaultValue()
+        this.refs.form.validateAll(async(errors, values) => {
+          if (errors) { this.setState({loading : false}); return; }
+          values.jobStep = this.state.jobStep
+          let flag = await this.props.onSubmit(values)
+          if(flag){
+            Feedback.toast.success('Success');
+          }else{
+            Feedback.toast.error('Fail');
+          }
+          this.setState({loading : false})
+        });
+    };
+
     checkScheduled = async(rule, values, callback, stateValues) =>{
         if(!values){
           callback('please input job scheduled');
@@ -75,9 +110,93 @@ export default class Form extends Component {
         }
     }
 
+    renderStepConfig = () => {
+        let stepConfig = ""
+        if(this.state.jobConfig && this.state.jobConfig.length >0) {
+            stepConfig = this.state.jobConfig.map(config =>{
+                switch(config.type){
+                    case "TEXT":
+                        return this.renderText(config);
+                    case "DATABASE":
+                        return this.renderDatabase(config);
+                    case "SQL":
+                        return this.renderSql(config);
+                    default:
+                        return ""
+                }
+            })
+        }
+        return <div>{stepConfig}</div>
+    }
 
+    renderTextarea(config) {
+        return (
+          <Row key={config.name} style={styles.formItem}>
+            <Col xxs="6" s="3" l="3" style={styles.formLabel}>{config.label}</Col>
+            <Col s="15" l="15">
+              <IceFormBinder name={"config." + config.name} required={config.required} message={config.label + " is required"}>
+                <Input size="large" defaultValue={config.defaultValue} multiple placeholder={"please input " + config.label} style={{ width: '100%' }} />
+              </IceFormBinder>
+              <IceFormError name={"config." + config.name} />
+            </Col>
+          </Row>
+        )
+    }
+
+    renderSql(config) {
+        return (
+          <Row key={config.name} style={styles.formItem}>
+            <Col xxs="6" s="3" l="3" style={styles.formLabel}>{config.label}</Col>
+            <Col s="15" l="15" style={{border:'1px solid #dcdee3'}}>
+              <IceFormBinder name={"config." + config.name} required={config.required} message={config.label + " is required"}>
+                <Monaco
+                  height="300"
+                  language="sql"
+                  options={monacoOptions}
+                  defaultValue={config.defaultValue} />
+              </IceFormBinder>
+              <IceFormError name={"config." + config.name} />
+            </Col>
+          </Row>
+        )
+    }
+
+    renderDatabase(config) {
+        return (
+            <Row key={config.name} style={styles.formItem}>
+              <Col xxs="6" s="3" l="3" style={styles.formLabel}>{config.label}</Col>
+              <Col s="15" l="15">
+                <IceFormBinder name={"config." + config.name} required={config.required} message={config.label + " is required"}>
+                  <Select size="large" placeholder={"please select " + config.label} style={{ width: '100%' }}>
+                    {
+                      this.props.database.map(db=>{
+                        return <Select.Option key={db.id} value={db.id}>{db.name}</Select.Option>
+                      })
+                    }
+                  </Select>
+                </IceFormBinder>
+                <IceFormError name={"config." + config.name} />
+              </Col>
+            </Row>
+        )
+    }
+
+    renderText(config) {
+        return (
+          <Row key={config.name} style={styles.formItem}>
+            <Col xxs="6" s="3" l="3" style={styles.formLabel}>{config.label}</Col>
+            <Col s="15" l="15">
+              <IceFormBinder name={"config." + config.name} required={config.required} message={config.label + " is required"}>
+                <Input size="large" defaultValue={config.defaultValue} placeholder={"please input " + config.label} style={{ width: '100%' }} />
+              </IceFormBinder>
+              <IceFormError name={"config." + config.name} />
+            </Col>
+          </Row>
+        )
+    }
 
     render() {
+        let stepConfig = this.renderStepConfig();
         return (
             <div className="user-form">
                 <IceContainer>
@@ -163,6 +282,7 @@ export default class Form extends Component {
                             <IceFormError name="status" />
                             </Col>
                         </Row>
+                        {stepConfig}
                         </div>
                     </IceFormBinderWrapper>
 
@@ -199,10 +319,9 @@ const styles = {
     },
   };
 
-  const monacoOptions = {
+const monacoOptions = {
     selectOnLineNumbers: true,
     automaticLayout: true,
     theme: 'vs', //vs-dark
     minimap: { enabled: false },
-  };
-  
+};
