@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Pagination, Dialog, Feedback, Button, Search } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
-// import IceLabel from '@icedesign/label';
+import IceLabel from '@icedesign/label';
 import PropTypes from 'prop-types';
 
 export default class JobTable extends Component {
@@ -61,6 +61,36 @@ export default class JobTable extends Component {
           });
         }
     }
+
+    run = async(record, e) => {
+        try {
+          let message = await this.props.run(record.id)
+          Feedback.toast.success(message);
+        } catch (error) {
+          Feedback.toast.error(error.message);
+        }
+    }
+
+    renderStatus = (value, index, record) => {
+        return (
+          value
+            ?
+          <IceLabel inverse={true} status="success">ENABLE</IceLabel>
+            :
+          <IceLabel inverse={true} status="danger">DISABLED</IceLabel>
+        );
+    };
+
+    renderOperations = (value, index, record) => {
+        let operation = { marginRight: '12px', textDecoration: 'none' }
+        return (
+          <div style={{ lineHeight: '28px' }}>
+            <a href="javascript:void(0)" style={operation} onClick={() => { this.run(record); }}> Run </a>
+            <a href="javascript:void(0)" style={operation} onClick={() => { this.editItem(record); }}> Edit </a>
+            <a href="javascript:void(0)" style={operation} onClick={() => { this.deleteItem(record); }}> Delete </a>
+          </div>
+        );
+    };
 
     render() {
         return (
