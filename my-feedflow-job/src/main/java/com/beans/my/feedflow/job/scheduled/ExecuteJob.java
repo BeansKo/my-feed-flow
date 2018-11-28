@@ -70,9 +70,9 @@ public class ExecuteJob {
 		LOGGER.info("====> start job:" + jobId);
 		Job job = jobService.get(jobId);
 		Assert.notNull(job,"can not find job:" + jobId);
+		//根据job的jobtype获取相应的jobtype
 		JobType jobType = jobTypeService.get(job.getJobType());
 		Assert.notNull(jobType, "can not find jobType:" + job.getJobType());
-		
 		job.setJobTypeValue(jobType);
 		
 		String logPath = getFilePath(this.logPath);

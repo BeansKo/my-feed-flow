@@ -4,13 +4,10 @@
 
 import BasicLayout from './layouts/BasicLayout';
 import Dashboard from './pages/Dashboard';
-import Document from './pages/Document';
-import Services from './pages/Services';
-import Member from './pages/Member';
-import Setting from './pages/Setting';
 import {Database,addDatabase,editDatabase} from './pages/Database';
 import {Email,addEmail} from './pages/Email'
 import {JobType,AddJobType} from './pages/JobType'
+import {Job,addJob} from './pages/Job'
 
 const routerConfig = [
   {
@@ -19,14 +16,16 @@ const routerConfig = [
     component: Dashboard,
   },
   {
-    path: '/document',
+    path: '/job',
     layout: BasicLayout,
-    component: Document,
-  },
-  {
-    path: '/services',
-    layout: BasicLayout,
-    component: Services,
+    component: Job,
+    childRoutes: [
+      {
+        path: '/add',
+        layout: BasicLayout,
+        component: addJob,
+      }
+    ],
   },
   {
     path: '/jobtype',

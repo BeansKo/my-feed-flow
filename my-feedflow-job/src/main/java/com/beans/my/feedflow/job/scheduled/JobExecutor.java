@@ -42,6 +42,7 @@ public class JobExecutor {
 	 * @param notice
 	 */
 	public void execute(Job job,JobType jobType,String configPath,String dataPath,JobNotice notice){
+		//获取jobType下的所有step
 		List<String> list = jobType.getJobStep();
 		Assert.notNull(list, "can not find jobStep");
 		Assert.notEmpty(list, "jobStep can not empty");

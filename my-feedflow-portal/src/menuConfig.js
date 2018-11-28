@@ -31,13 +31,8 @@ const asideMenuConfig = [
     icon: 'home2',
   },
   {
-    name: '文档',
-    path: '/document',
-    icon: 'copy',
-  },
-  {
     name: 'JOB',
-    path: '/services',
+    path: '/job',
     icon: 'copy',
   },
   {
