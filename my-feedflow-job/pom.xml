@@ -9,8 +9,8 @@
 	</parent>
 
 	<artifactId>my-feedflow-job</artifactId>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
-	<name>my-feedflow-job</name>
 	
 	<properties>
 		<hbase.version>1.2.0-cdh5.8.3</hbase.version>
@@ -188,5 +188,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<version>1.0.2</version>
 </project>

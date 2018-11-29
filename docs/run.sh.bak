@@ -1,0 +1,62 @@
+#!/bin/sh
+
+BASE_DIR=/var/lib/ECTalend/Jobs/FeedFlow
+JAVA_HOME=${BASE_DIR}/jdk1.8.0_45
+CLASSPATH=.:${JAVA_HOME}/lib
+PATH=${JAVA_HOME}/bin:${PATH}
+CONFIG_URL=http://ip/bigdata/EC2Config/raw/master/feedflow
+LOCAL_ENV=prde11
+
+# unzip package
+
+version=$(find feedflow-job-*-release.zip | awk -v head="feedflow-job-" -v tail="-release.zip" '{print substr($0, index($0,head)+length(head),index($0,tail)-index($0,head)-length(head))}')
+
+if [ ! $version ]; then
+    echo "package version is null."
+    exit -1
+fi
+echo "version:"${version}
+
+UNZIPPED_DIR_NAME=feedflow-job-${version}
+ZIP_NAME=feedflow-job-${version}-release.zip
+
+cd ${BASE_DIR}
+
+if [ -d ${UNZIPPED_DIR_NAME} ]; then
+  rm -rf ${UNZIPPED_DIR_NAME}
+fi
+
+if [ ! -f ${ZIP_NAME} ]; then
+  echo "file \"${ZIP_NAME}\" not found, please upload it first."
+  exit 2
+fi
+
+unzip -q ${ZIP_NAME}
+mv ${UNZIPPED_DIR_NAME}/${UNZIPPED_DIR_NAME}.jar ${UNZIPPED_DIR_NAME}/feedflow-job.jar
+
+# kill current process
+
+PID=`ps -ef | grep feedflow-job.jar | grep -v 'grep' | awk '{print $2}'`
+for id in $PID
+do
+  kill -9 $id
+  echo "killed $id"
+done
+
+# startup application
+
+cd ${BASE_DIR}/${UNZIPPED_DIR_NAME}
+mkdir logs
+sed -i 's/\r//' start.sh
+nohup sh start.sh \
+  --configService=${CONFIG_URL} \
+  --config=application.properties \
+  --log4j=log4j-${LOCAL_ENV}.properties \
+  --env=env-${LOCAL_ENV}.properties \
+  --server.port=8100 \
+  --local=${LOCAL_ENV} \
+  --job.log.path=${BASE_DIR}/logs \
+  --job.config.path=${BASE_DIR}/config \
+  --job.data.path=${BASE_DIR}/data > \
+  ${BASE_DIR}/${UNZIPPED_DIR_NAME}/logs/feedflow.out 2>&1 &
+
