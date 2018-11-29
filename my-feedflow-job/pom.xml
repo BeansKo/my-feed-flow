@@ -121,10 +121,72 @@
 	</dependencies>
 
 	<build>
-		<pluginManagement>
-			<plugins>
-
-			</plugins>
-		</pluginManagement>
+		<finalName>myfeedflow-job-${version}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+						<manifest>
+							<!-- 是否指定项目classpath下的依赖 -->
+							<addClasspath>true</addClasspath>
+							<!-- 指定依赖的时候声明前缀 -->
+							<classpathPrefix>lib</classpathPrefix>
+							 <!--运行jar包时运行的主类，要求类全名-->
+							<mainClass>com.beans.mu.feedflow.job.App</mainClass>
+						</manifest>
+					</archive>
+					<excludes>
+						<exclude>bin/</exclude>
+						<exclude>application.properties</exclude>
+						<exclude>log4j.properties</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			
+			<!-- 拷贝依赖的jar包到lib目录 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeScope>runtime</includeScope>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>package.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<!-- 配置执行器 -->
+						<id>make-assembly</id>
+						<!-- 绑定到package生命周期阶段上 -->
+						<phase>package</phase>
+						<goals>
+							<!-- 只运行一次 -->
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
+	<version>1.0.2</version>
 </project>
