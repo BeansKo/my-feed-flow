@@ -1,0 +1,33 @@
+#!/bin/sh
+
+
+version=$(find feedflow-job-*-release.zip | awk -v head="feedflow-job-" -v tail="-release.zip" '{print substr($0, index($0,head)+length(head),index($0,tail)-index($0,head)-length(head))}')
+
+if [ ! $version ]; then
+    echo "docker image version is nil."
+    exit -1
+fi
+echo "version:"${version}
+
+UNZIPPED_DIR_NAME=feedflow-job-${version}
+ZIP_NAME=feedflow-job-${version}-release.zip
+DOCKER_IMG=docker.neg/ecbd/feedflow-service:${version}
+
+if [ -d ${UNZIPPED_DIR_NAME} ]; then
+  rm -rf ${UNZIPPED_DIR_NAME}
+fi
+
+if [ ! -f ${ZIP_NAME} ]; then
+  echo "file \"${ZIP_NAME}\" not found, please upload it first."
+  exit 2
+fi
+
+unzip -q ${ZIP_NAME} && rm -rf feedflow-job && mv ${UNZIPPED_DIR_NAME} feedflow-job  
+mv feedflow-job/${UNZIPPED_DIR_NAME}.jar feedflow-job/feedflow-job.jar
+
+docker build -t ${DOCKER_IMG} .
+
+rm -rf feedflow-job
+echo "rm feedflow-job"
+rm -rf ${ZIP_NAME}
+echo "rm "${ZIP_NAME}
